@@ -1,0 +1,19 @@
+ProgreS.O.S. - Sistema de Seguimiento de Proyectos Académicos
+================================================================
+
+¡Nuevo comentario en tu proyecto!
+
+Hola {{ estudiante.get_full_name|default:estudiante.username }},
+
+Has recibido un nuevo comentario en tu proyecto: {{ proyecto.titulo }}
+
+{{ autor.get_full_name|default:autor.username }} comentó:
+{{ comentario.texto }}
+
+Fecha: {{ comentario.fecha_creacion|date:"d/m/Y H:i" }}
+
+Ingresa al sistema para ver más detalles y responder.
+
+---
+Este es un mensaje automático de ProgreS.O.S.
+© 2025 Nicolás Garcia & David Rodriguez

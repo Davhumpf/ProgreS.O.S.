@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block title %}ProgreS.O.S. - Sistema de Seguimiento de Proyectos{% endblock %}
+
+{% block content %}
+<div class="hero bg-primary text-white text-center py-5 mb-5" style="background: linear-gradient(135deg, #8B1E3F 0%, #B23A48 100%);">
+    <div class="container">
+        <i class="fas fa-project-diagram fa-3x mb-3"></i>
+        <h1 class="display-3 fw-bold">ProgreS.O.S.</h1>
+        <p class="lead fs-4">Sistema de Seguimiento de Proyectos Académicos</p>
+        <p class="mt-4">
+            <em>Autores: David Rump & Nicolás Garcia</em>
+        </p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                        <i class="fas fa-folder-open fa-3x text-primary"></i>
+                    </div>
+                    <h5 class="card-title fw-bold">Gestión de Proyectos</h5>
+                    <p class="card-text text-muted">
+                        Los estudiantes pueden crear, editar y enviar sus proyectos académicos con documentación adjunta.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                        <i class="fas fa-comments fa-3x text-primary"></i>
+                    </div>
+                    <h5 class="card-title fw-bold">Sistema de Comentarios</h5>
+                    <p class="card-text text-muted">
+                        Docentes y estudiantes pueden intercambiar retroalimentación mediante comentarios con notificaciones por email.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                        <i class="fas fa-chart-bar fa-3x text-primary"></i>
+                    </div>
+                    <h5 class="card-title fw-bold">Métricas y Reportes</h5>
+                    <p class="card-text text-muted">
+                        Cálculo automático de promedios por estudiante y exportación de datos en CSV/PDF.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5 g-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header text-white" style="background: var(--primary-gradient);">
+                    <h5 class="mb-0">
+                        <i class="fas fa-user-graduate me-2"></i>Para Estudiantes
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-check-circle text-primary me-2"></i>Crear y gestionar proyectos académicos</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-primary me-2"></i>Subir documentación (PDF, DOC, DOCX)</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-primary me-2"></i>Ver comentarios de docentes</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-primary me-2"></i>Consultar calificaciones</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chalkboard-teacher me-2"></i>Para Docentes
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Revisar proyectos de estudiantes</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Calificar y aprobar proyectos</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Dejar comentarios y retroalimentación</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Exportar reportes académicos</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-5 mb-5">
+        <h3 class="mb-4">¿Listo para comenzar?</h3>
+        {% if user.is_authenticated %}
+            <a href="{% url 'projects:list' %}" class="btn btn-primary btn-lg me-2">
+                <i class="fas fa-folder-open me-2"></i>
+                Ir a Proyectos
+            </a>
+            {% if user.groups.all.0.name == 'Docente' %}
+            <a href="{% url 'accounts:dashboard' %}" class="btn btn-success btn-lg">
+                <i class="fas fa-chart-line me-2"></i>
+                Dashboard
+            </a>
+            {% endif %}
+        {% else %}
+            <a href="{% url 'accounts:login' %}" class="btn btn-primary btn-lg me-2">
+                <i class="fas fa-sign-in-alt me-2"></i>
+                Iniciar Sesión
+            </a>
+            <a href="/api/docs/" target="_blank" class="btn btn-outline-primary btn-lg">
+                <i class="fas fa-code me-2"></i>
+                Ver API
+            </a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mi Perfil - ProgreS.O.S.{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-user-circle fa-5x text-primary mb-3"></i>
+                    <h4 class="fw-bold">{{ user.get_full_name|default:user.username }}</h4>
+                    <p class="text-muted">{{ user.email|default:"Sin email" }}</p>
+                    
+                    <span class="badge bg-primary fs-6">
+                        {% if is_student %}
+                        <i class="fas fa-user-graduate me-1"></i> Estudiante
+                        {% elif is_teacher %}
+                        <i class="fas fa-chalkboard-teacher me-1"></i> Docente
+                        {% else %}
+                        <i class="fas fa-user me-1"></i> Usuario
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            {% if is_student %}
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-bar me-2"></i>
+                        Mis Métricas
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-md-4 mb-3">
+                            <div class="metric-card">
+                                <i class="fas fa-folder fa-2x text-primary mb-2"></i>
+                                <h3 class="fw-bold">{{ metrics.total_proyectos }}</h3>
+                                <p class="text-muted mb-0">Proyectos Totales</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="metric-card">
+                                <i class="fas fa-check-circle fa-2x text-success mb-2"></i>
+                                <h3 class="fw-bold">{{ metrics.proyectos_calificados }}</h3>
+                                <p class="text-muted mb-0">Calificados</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="metric-card">
+                                <i class="fas fa-star fa-2x text-warning mb-2"></i>
+                                <h3 class="fw-bold">
+                                    {% if promedio %}
+                                    {{ promedio|floatformat:2 }}
+                                    {% else %}
+                                    N/A
+                                    {% endif %}
+                                </h3>
+                                <p class="text-muted mb-0">Promedio</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="d-grid">
+                        <a href="{% url 'projects:list' %}" class="btn btn-primary">
+                            <i class="fas fa-folder-open me-2"></i>
+                            Ver Mis Proyectos
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de Notas -->
+            <div class="card shadow-sm mt-4">
+                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="fas fa-clipboard-list me-2"></i>
+                        Historial de Calificaciones
+                    </h5>
+                    {% if proyectos_calificados %}
+                    <a href="#" onclick="window.print(); return false;" class="btn btn-light btn-sm">
+                        <i class="fas fa-print me-1"></i> Imprimir Reporte
+                    </a>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    {% if proyectos_calificados %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th><i class="fas fa-hashtag me-1"></i> #</th>
+                                    <th><i class="fas fa-project-diagram me-1"></i> Proyecto</th>
+                                    <th class="text-center"><i class="fas fa-traffic-light me-1"></i> Estado</th>
+                                    <th class="text-center"><i class="fas fa-star me-1"></i> Calificación</th>
+                                    <th class="text-center"><i class="fas fa-calendar me-1"></i> Fecha</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for proyecto in proyectos_calificados %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>
+                                        <a href="{% url 'projects:detail' proyecto.pk %}" class="text-decoration-none">
+                                            <strong>{{ proyecto.titulo }}</strong>
+                                        </a>
+                                    </td>
+                                    <td class="text-center">
+                                        {% if proyecto.estado == 'aprobado' %}
+                                        <span class="badge bg-success">
+                                            <i class="fas fa-check-circle me-1"></i> Aprobado
+                                        </span>
+                                        {% elif proyecto.estado == 'rechazado' %}
+                                        <span class="badge bg-danger">
+                                            <i class="fas fa-times-circle me-1"></i> Rechazado
+                                        </span>
+                                        {% elif proyecto.estado == 'en_revision' %}
+                                        <span class="badge bg-warning">
+                                            <i class="fas fa-eye me-1"></i> En Revisión
+                                        </span>
+                                        {% else %}
+                                        <span class="badge bg-info">
+                                            <i class="fas fa-paper-plane me-1"></i> {{ proyecto.get_estado_display }}
+                                        </span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-center">
+                                        {% if proyecto.calificacion %}
+                                        <span class="badge bg-primary fs-6">
+                                            <i class="fas fa-star me-1"></i> {{ proyecto.calificacion|floatformat:1 }}
+                                        </span>
+                                        {% else %}
+                                        <span class="text-muted">Sin calificar</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-center text-muted">
+                                        <small>{{ proyecto.fecha_revision|date:"d/m/Y"|default:"N/A" }}</small>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr class="table-active">
+                                    <td colspan="3" class="text-end"><strong>Promedio General:</strong></td>
+                                    <td class="text-center">
+                                        <span class="badge bg-warning fs-5">
+                                            <i class="fas fa-chart-line me-1"></i>
+                                            {% if promedio %}
+                                            {{ promedio|floatformat:2 }}
+                                            {% else %}
+                                            N/A
+                                            {% endif %}
+                                        </span>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info text-center mb-0">
+                        <i class="fas fa-info-circle fa-2x mb-2"></i>
+                        <p class="mb-0">Aún no tienes proyectos calificados.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% else %}
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Información del Docente</h5>
+                    <p class="text-muted">Accede al dashboard para ver métricas de estudiantes.</p>
+                    <a href="{% url 'accounts:dashboard' %}" class="btn btn-primary">
+                        <i class="fas fa-chart-line me-2"></i>
+                        Ir al Dashboard
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

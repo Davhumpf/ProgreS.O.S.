@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto Creado</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background: linear-gradient(135deg, #8B1E3F 0%, #B23A48 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+        }
+        .content {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border: 1px solid #dee2e6;
+            border-radius: 0 0 5px 5px;
+        }
+        .project-box {
+            background-color: white;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #8B1E3F;
+            border-radius: 3px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>ProgreS.O.S.</h1>
+        <p>Sistema de Seguimiento de Proyectos Académicos</p>
+    </div>
+    
+    <div class="content">
+        <h2>¡Nuevo proyecto creado!</h2>
+        
+        <p>Hola <strong>{{ recipient_name }}</strong>,</p>
+        
+        <p>Se ha creado exitosamente un nuevo proyecto:</p>
+        
+        <div class="project-box">
+            <h3>{{ project.titulo }}</h3>
+            <p>{{ project.descripcion }}</p>
+            <p style="font-size: 12px; color: #6c757d;">
+                Estado: <strong>{{ project.get_estado_display }}</strong>
+            </p>
+        </div>
+        
+        <p>Ingresa al sistema para ver más detalles.</p>
+    </div>
+    
+    <div class="footer">
+        <p>Este es un mensaje automático de ProgreS.O.S.</p>
+        <p>&copy; 2025 David Rump & Nicolás Garcia</p>
+    </div>
+</body>
+</html>

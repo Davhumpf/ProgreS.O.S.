@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Iniciar Sesión - ProgreS.O.S.{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow-lg">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-project-diagram fa-3x text-primary mb-3"></i>
+                        <h2 class="fw-bold">ProgreS.O.S.</h2>
+                        <p class="text-muted">Sistema de Seguimiento de Proyectos</p>
+                    </div>
+
+                    {% if form.errors %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        Usuario o contraseña incorrectos.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    {% endif %}
+
+                    <form method="post" action="{% url 'accounts:login' %}">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="id_username" class="form-label">Usuario</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                <input type="text" 
+                                       name="username" 
+                                       class="form-control" 
+                                       id="id_username"
+                                       placeholder="Ingresa tu usuario"
+                                       required 
+                                       autofocus>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="id_password" class="form-label">Contraseña</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                <input type="password" 
+                                       name="password" 
+                                       class="form-control" 
+                                       id="id_password"
+                                       placeholder="Ingresa tu contraseña"
+                                       required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 py-2">
+                            <i class="fas fa-sign-in-alt me-2"></i>
+                            Iniciar Sesión
+                        </button>
+                    </form>
+
+                    <hr class="my-4">
+
+                    <div class="text-center">
+                        <p class="text-muted small mb-2">Usuarios Demo:</p>
+                        <p class="small mb-0">
+                            <span class="badge bg-info">estudiante_demo / demo123</span>
+                            <span class="badge bg-warning">docente_demo / demo123</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

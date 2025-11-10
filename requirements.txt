@@ -1,0 +1,21 @@
+# ProgreS.O.S. - Sistema de Seguimiento de Proyectos Académicos
+# Autores: David Rump, Nicolás Garcia
+
+# Core
+Django>=5.0,<6.0
+python-decouple>=3.8
+
+# Forms & UI
+django-crispy-forms>=2.0
+crispy-bootstrap5>=0.7
+
+# API REST
+djangorestframework>=3.14
+drf-yasg>=1.21
+
+# Database
+Pillow>=10.0
+
+# Development
+pytest>=7.4
+pytest-django>=4.5

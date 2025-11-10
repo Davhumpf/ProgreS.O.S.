@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Proyectos - ProgreS.O.S.{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-6 fw-bold">
+            <i class="fas fa-folder-open text-primary me-2"></i>
+            {% if is_teacher %}Todos los Proyectos{% else %}Mis Proyectos{% endif %}
+        </h1>
+        
+        {% if is_student %}
+        <a href="{% url 'projects:create' %}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>
+            Nuevo Proyecto
+        </a>
+        {% endif %}
+    </div>
+
+    <!-- Filtros para docentes -->
+    {% if is_teacher and filter_form %}
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-3">
+                    {{ filter_form.estado }}
+                </div>
+                <div class="col-md-3">
+                    {{ filter_form.estudiante }}
+                </div>
+                <div class="col-md-4">
+                    {{ filter_form.buscar }}
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-filter me-2"></i>Filtrar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Estadísticas para docentes -->
+    {% if is_teacher and statistics %}
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white shadow-sm">
+                <div class="card-body">
+                    <h3 class="fw-bold">{{ statistics.total }}</h3>
+                    <p class="mb-0">Total Proyectos</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white shadow-sm">
+                <div class="card-body">
+                    <h3 class="fw-bold">{{ statistics.enviados }}</h3>
+                    <p class="mb-0">Enviados</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white shadow-sm">
+                <div class="card-body">
+                    <h3 class="fw-bold">{{ statistics.en_revision }}</h3>
+                    <p class="mb-0">En Revisión</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white shadow-sm">
+                <div class="card-body">
+                    <h3 class="fw-bold">{{ statistics.aprobados }}</h3>
+                    <p class="mb-0">Aprobados</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Lista de proyectos -->
+    {% if proyectos %}
+    <div class="row">
+        {% for proyecto in proyectos %}
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="card-title fw-bold">{{ proyecto.titulo }}</h5>
+                        {% if proyecto.estado == 'enviado' %}
+                        <span class="badge bg-info">Enviado</span>
+                        {% elif proyecto.estado == 'revision' %}
+                        <span class="badge bg-warning">En Revisión</span>
+                        {% elif proyecto.estado == 'aprobado' %}
+                        <span class="badge bg-success">Aprobado</span>
+                        {% endif %}
+                    </div>
+                    
+                    <p class="text-muted small">
+                        <i class="fas fa-user me-1"></i>
+                        {{ proyecto.estudiante.get_full_name|default:proyecto.estudiante.username }}
+                    </p>
+                    
+                    <p class="card-text">{{ proyecto.descripcion|truncatewords:20 }}</p>
+                    
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            <i class="fas fa-calendar me-1"></i>
+                            {{ proyecto.fecha_envio|date:"d/m/Y" }}
+                        </small>
+                        
+                        {% if proyecto.calificacion %}
+                        <span class="badge bg-success fs-6">
+                            <i class="fas fa-star me-1"></i>
+                            {{ proyecto.calificacion }}
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <a href="{% url 'projects:detail' proyecto.pk %}" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-eye me-1"></i>
+                        Ver Detalles
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Paginación -->
+    {% if is_paginated %}
+    <nav aria-label="Paginación">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1">Primera</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+            </li>
+            {% endif %}
+
+            <li class="page-item active">
+                <span class="page-link">{{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+            </li>
+
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Última</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+    
+    {% else %}
+    <!-- Sin proyectos -->
+    <div class="text-center py-5">
+        <i class="fas fa-folder-open fa-4x text-muted mb-3"></i>
+        <h4 class="text-muted">No hay proyectos</h4>
+        {% if is_student %}
+        <p class="text-muted">¡Crea tu primer proyecto!</p>
+        <a href="{% url 'projects:create' %}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>
+            Nuevo Proyecto
+        </a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

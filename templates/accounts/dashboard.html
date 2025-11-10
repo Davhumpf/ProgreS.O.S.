@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard Docente - ProgreS.O.S.{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-6 fw-bold">
+            <i class="fas fa-chart-line text-primary me-2"></i>
+            Dashboard Docente
+        </h1>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-users me-2"></i>
+                        Métricas de Estudiantes
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if students %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Estudiante</th>
+                                    <th>Email</th>
+                                    <th class="text-center">Total Proyectos</th>
+                                    <th class="text-center">Calificados</th>
+                                    <th class="text-center">Aprobados</th>
+                                    <th class="text-center">Promedio</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for student in students %}
+                                <tr>
+                                    <td>
+                                        <i class="fas fa-user-circle text-muted me-2"></i>
+                                        {{ student.get_full_name|default:student.username }}
+                                    </td>
+                                    <td class="text-muted">{{ student.email|default:"Sin email" }}</td>
+                                    <td class="text-center">{{ student.total_proyectos }}</td>
+                                    <td class="text-center">{{ student.proyectos_calificados }}</td>
+                                    <td class="text-center">{{ student.proyectos_aprobados }}</td>
+                                    <td class="text-center">
+                                        {% if student.promedio %}
+                                        <span class="badge bg-success fs-6">{{ student.promedio|floatformat:2 }}</span>
+                                        {% else %}
+                                        <span class="text-muted">Sin calificar</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">No hay estudiantes registrados.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

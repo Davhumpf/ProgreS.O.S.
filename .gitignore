@@ -1,0 +1,133 @@
+# ============================================
+# Python
+# ============================================
+*.py[cod]
+*$py.class
+*.so
+.Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+
+# ============================================
+# Django
+# ============================================
+*.log
+db.sqlite3
+db.sqlite3-journal
+*.pot
+local_settings.py
+staticfiles/
+media/
+
+# Except for placeholder files
+!media/.gitkeep
+!staticfiles/.gitkeep
+
+
+# ============================================
+# Environment Variables
+# ============================================
+.env
+.env.local
+.env.production
+*.env
+
+
+# ============================================
+# Virtual Environment
+# ============================================
+venv/
+env/
+ENV/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+
+# ============================================
+# IDEs
+# ============================================
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+
+# ============================================
+# OS
+# ============================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+
+
+# ============================================
+# Testing
+# ============================================
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+
+# ============================================
+# Documentation
+# ============================================
+docs/_build/
+site/
+
+
+# ============================================
+# Backups
+# ============================================
+*.bak
+*.backup
+*.old
+
+
+# ============================================
+# Temporary files
+# ============================================
+*.tmp
+*.temp
+.cache/
+
+
+# ============================================
+# Node (si se usa frontend con npm)
+# ============================================
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
